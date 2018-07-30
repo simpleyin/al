@@ -13,39 +13,32 @@
  * 中心点向外扩散法。O(n^2)
  */
 function findLongest_dp(s) {
-    let p = 0, length = s.length, maxStr = s.charAt(0);
+    let p = 0, length = s.length, current = 0, start = 0, end = 0;
     while (p < length) {
-            for (let i = 1, left, right,leftIndex, rightIndex; i > 0; i++) {
-                if (p + ".0" == p) {
-                    left = s.charAt(p - i);
-                    right = s.charAt(p + i);
-                    leftIndex = p - i;
-                    rightIndex = p + i;
-                } else {
-                    left = s.charAt(p - (i - 1) - 0.5);
-                    right = s.charAt(p + (i - 1) + 0.5);
-                    leftIndex = p - (i - 1) - 0.5;
-                    rightIndex = p + (i - 1) + 0.5;
-                }
-                
-                if ( left.length > 0 && right.length > 0) {
-                    if (left === right) {
-                        current = String.prototype.substr.call(s, leftIndex, rightIndex - leftIndex + 1);
-                        maxStr = maxStr.length > current.length ? maxStr : current;
-                    } else {
-                        break;
-                    }
-                } else {
-                    break;
-                }
-            }
-        p = p + 0.5;
+        let l1 = moveRoundCenter(s, p, p);
+        let l2 = moveRoundCenter(s, p, p + 1);
+        console.log(l1);
+        console.log(l2);
+        l1 > l2 ? current = l1 : current = l2;
+        if (end - start < current) {
+            start = p - (current - 1) / 2;
+            end = p + current / 2;
+        }
+        p++;
     }
-    return maxStr;
+    return String.prototype.substr.call(s, start, end + 1);
 }
+
+var moveRoundCenter = function(s, l, r) {
+    while (s.charAt(l) !== "" && s.charAt(r) !== "" && s.charAt(l) === s.charAt(r)) {
+        l--;
+        r++;
+    }
+    return r - l - 1; //为什么是减一, 因为while循环每次在最后都对l,r进行了操作，需要处理多减去的l和多加的r.
+}
+
 
 /**
  * Manacher算法，复杂度O(n)
  */
-
-console.log(findLongest_dp("asdfasdfaslkdfj;aslkbabdfja;lskjfl;sjiweojfowijf;lsadkjfl;bb"));
+console.log(findLongest_dp("abab"));

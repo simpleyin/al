@@ -9,7 +9,8 @@ function Node(val) {
 }
 
 function printListReversingly(node) {
-
+    //1. 用一个栈来记录每次遍历的值，最后出栈打印
+    //2. 使用递归先打印每各节点后续节点的值
 }
 
 printListReversingly();
